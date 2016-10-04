@@ -1,4 +1,4 @@
-import { forEach, isArray, isEmpty, isString, map, memoize } from 'lodash/forEach'
+import { forEach, isArray, isEmpty, isString, map, memoize } from 'lodash'
 
 import * as validatorFunctions from './validation'
 // Stupid eslint thing.
