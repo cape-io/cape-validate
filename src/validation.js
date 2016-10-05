@@ -1,4 +1,4 @@
-import { curry, eq, flow, gt, head, lt, nthArg, over, partial, property } from 'lodash'
+import { curry, eq, flow, gt, head, lt, negate, nthArg, over, property, spread } from 'lodash'
 
 export function createValidator(validateFunc, errMsg) {
   return curry((args, value) => {
@@ -11,9 +11,11 @@ export const firstChar = curry((arg, value) => {
   return undefined
 })
 export const valueLength = flow(nthArg(1), property('length'))
-export const createLengthCheck = partial(flow, over(valueLength), nthArg(0))
+export function createLengthCheck(func) {
+  return flow(over(valueLength, nthArg(0)), spread(func))
+}
 
-export const invalidLength = createLengthCheck(eq)
+export const invalidLength = negate(createLengthCheck(eq))
 export const length = curry((arg, value) => {
   if (invalidLength(arg, value)) return `Must be at ${arg} characters long.`
   return undefined

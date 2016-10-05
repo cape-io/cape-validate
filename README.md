@@ -1,4 +1,4 @@
-# cape-validate v1.0.1
+# cape-validate v1.0.2
 
 Some simple validation functions.
 
