@@ -1,4 +1,4 @@
-import { forEach, isArray, isEmpty, isString, map, memoize } from 'lodash'
+import { forEach, isArray, isEmpty, isFunction, isString, map, memoize } from 'lodash'
 
 import * as validatorFunctions from './validation'
 // Stupid eslint thing.
@@ -16,6 +16,7 @@ function getValidateFunc(methodName) {
 
 // Take a validation string or array and turn it into a validation function.
 export const validatorToFunc = memoize((validator) => {
+  if (isFunction(validator)) return validator
   if (isArray(validator)) {
     const [ methodName, args ] = validator
     // Call function with args and then return result function.

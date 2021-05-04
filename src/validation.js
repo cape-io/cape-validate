@@ -1,5 +1,9 @@
 import { curry, eq, flow, gt, head, lt, negate, nthArg, over, property, spread } from 'lodash'
 
+export function createBasicValidator(checkFunc, errMsg) {
+  return val => ((checkFunc(val)) ? errMsg : undefined)
+}
+
 export function createValidator(validateFunc, errMsg) {
   return curry((args, value) => {
     if (validateFunc(args, value)) return errMsg
@@ -14,7 +18,6 @@ export const valueLength = flow(nthArg(1), property('length'))
 export function createLengthCheck(func) {
   return flow(over(valueLength, nthArg(0)), spread(func))
 }
-
 export const invalidLength = negate(createLengthCheck(eq))
 export const length = curry((arg, value) => {
   if (invalidLength(arg, value)) return `Must be at ${arg} characters long.`
@@ -33,7 +36,5 @@ export const maxLength = curry((arg, value) => {
   return undefined
 })
 
-export function numString(val) {
-  if (!/^\d+$/.test(val)) return 'Must contain only numbers.'
-  return undefined
-}
+const isNumString = val => !/^\d+$/.test(val)
+export const numString = createBasicValidator(isNumString, 'Must contain only numbers.')
